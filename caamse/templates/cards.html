@@ -1,0 +1,42 @@
+<!--cards-->
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-10 col-md-8 col-lg-9 my-5 ml-auto">
+                <div class="row pt-md-5 mt-md-3 mb-5 cards-parent">
+                {% set icon = namespace(class='') %}
+                {% set menu_item = namespace(displayed=False) %}
+                {% for perm in form.permissions if not menu_item.displayed %}
+                    {% for item in form.items %}
+                        {% if item in perm.item %}
+                            {% set id = item.split() | join("") %}
+                            {% set icon.class = perm.icon %}
+                            {% if (current_user.user_role in perm.users)  and (current_user.is_authenticated) %}
+                                <div class="col-xl-3 col-sm-6 p-2 my-2" id="{{ item.split() | join('') }}">
+                                    <div class="card card-common">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <i class="{{ icon.class }} fa-3x text-warning"></i>
+                                                <div class="text-right text-secondary">
+                                                    <h5>{{ item }}</h5>
+                                                    <h3><a href='{{ url_for(perm.route) }}'>{{ perm.permission }}</a></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-secondary">
+                                            <i class="fas fa-certificate" mr-3"></i>
+                                            <span>Add description here</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--end ofcards-->
